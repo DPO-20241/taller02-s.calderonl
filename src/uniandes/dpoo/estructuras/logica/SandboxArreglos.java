@@ -35,6 +35,15 @@ public class SandboxArreglos
         arregloEnteros = new int[]{};
         arregloCadenas = new String[]{};
     }
+    
+    
+    private void addSpaceToInt() {
+    	arregloEnteros = new int[arregloEnteros.length + 1];
+    }
+    
+    private void addSpaceToString() {
+    	arregloCadenas = new String[arregloCadenas.length + 1];
+    }
 
     /**
      * Retorna una copia del arreglo de enteros, es decir un nuevo arreglo del mismo tamaño que contiene copias de los valores del arreglo original
@@ -79,7 +88,7 @@ public class SandboxArreglos
      */
     public void agregarEntero( int entero )
     {
-    	arregloEnteros = new int[arregloEnteros.length + 1];
+    	addSpaceToInt();
     	arregloEnteros[arregloEnteros.length -1] = entero;
 
     }
@@ -91,7 +100,8 @@ public class SandboxArreglos
      */
     public void agregarCadena( String cadena )
     {
-
+    	addSpaceToString();
+    	arregloCadenas[arregloCadenas.length - 1] = cadena;
     }
 
     /**
@@ -100,7 +110,32 @@ public class SandboxArreglos
      */
     public void eliminarEntero( int valor )
     {
-
+    	
+    	int newSize = 0;
+    	
+    	for (int i = 0; i < arregloEnteros.length; i++) {
+			if(arregloEnteros[i] != valor) {
+				newSize++;
+			}
+		}
+    	
+    	int[] newArray = new int[newSize];
+    	
+    	int newIndex = 0;
+    	
+    	for (int i = 0; i < arregloEnteros.length; i++) {
+			if(arregloEnteros[i] != valor) {
+				newArray[newIndex] = arregloEnteros[i];
+				newIndex++;
+			}
+		}
+    	
+    	arregloEnteros = newArray.clone();
+    	
+    	// NOTE No se si es la mejor solución al problema, pero no se me ocurrio una diferente
+    	// debido al problema de arrays de tamanio fijo. Si hay una mejor solucion me gustaria
+    	// poder sabela :)
+    	
     }
 
     /**
@@ -109,7 +144,26 @@ public class SandboxArreglos
      */
     public void eliminarCadena( String cadena )
     {
-
+    	int newSize = 0;
+    	
+    	for (int i = 0; i < arregloCadenas.length; i++) {
+			if(arregloCadenas[i] != cadena) {
+				newSize++;
+			}
+		}
+    	
+    	String[] newArray = new String[newSize];
+    	
+    	int newIndex = 0;
+    	
+    	for (int i = 0; i < arregloCadenas.length; i++) {
+			if(arregloCadenas[i] != cadena) {
+				newArray[newIndex] = arregloCadenas[i];
+				newIndex++;
+			}
+		}
+    	
+    	arregloCadenas = newArray.clone();
     }
 
     /**
@@ -119,9 +173,29 @@ public class SandboxArreglos
      * @param posicion La posición donde debe quedar el nuevo valor en el arreglo aumentado. Si la posición es menor a 0, se inserta el valor en la primera posición. Si la
      *        posición es mayor que el tamaño del arreglo, se inserta el valor en la última posición.
      */
-    public void insertarEntero( int entero, int posicion )
-    {
-
+    public void insertarEntero(int entero, int posicion) {
+        // Create a new array with one more position
+        int[] newArr = new int[arregloEnteros.length + 1];
+    
+        // Copy elements from old array to the new array
+        for (int i = 0, j = 0; i < arregloEnteros.length; i++, j++) {
+            // When the position is reached, insert the new element
+            if (i == posicion) {
+                newArr[j] = entero;
+                j++;  // Increment the position for the new array
+            }
+            newArr[j] = arregloEnteros[i];
+        }
+    
+        // If the position is greater than the size of the array, add the new element at the end
+        if (posicion < 0) {
+            newArr[0] = entero;
+        } else if (posicion >= arregloEnteros.length) {
+            newArr[newArr.length - 1] = entero;
+        }
+    
+        // Replace old array with the new array
+        arregloEnteros = newArr.clone();
     }
 
     /**
