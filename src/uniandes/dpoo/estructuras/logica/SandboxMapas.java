@@ -3,6 +3,7 @@ package uniandes.dpoo.estructuras.logica;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -41,7 +42,15 @@ public class SandboxMapas
      */
     public List<String> getValoresComoLista( )
     {
-        return null;
+        ArrayList<String> lista = new ArrayList<String>( );
+        for (String valor : mapaCadenas.values( ))
+        {
+            lista.add(valor);
+        }
+
+        lista.sort((a, b) -> a.compareTo(b));
+
+        return lista;
     }
 
     /**
@@ -50,7 +59,15 @@ public class SandboxMapas
      */
     public List<String> getLlavesComoListaInvertida( )
     {
-        return null;
+        ArrayList<String> lista = new ArrayList<String>( );
+        for (String llave : mapaCadenas.keySet( ))
+        {
+            lista.add(llave);
+        }
+
+        lista.sort((a, b) -> b.compareTo(a));
+
+        return lista;
     }
 
     /**
@@ -61,7 +78,18 @@ public class SandboxMapas
      */
     public String getPrimera( )
     {
-        return null;
+        List<String> list;
+        list = getLlavesComoListaInvertida();
+
+        if (list.size() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return list.get(list.size() - 1);
+        }
+        
     }
 
     /**
@@ -72,7 +100,17 @@ public class SandboxMapas
      */
     public String getUltima( )
     {
-        return null;
+        List<String> list;
+        list = getLlavesComoListaInvertida();
+
+        if (list.size() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return list.get(0);
+        }
     }
 
     /**
@@ -83,7 +121,13 @@ public class SandboxMapas
      */
     public Collection<String> getLlaves( )
     {
-        return null;
+        ArrayList<String> lista = new ArrayList<String>( );
+        for (String llave : mapaCadenas.keySet( ))
+        {
+            llave = llave.toUpperCase();
+            lista.add(llave);
+        }
+        return lista;
     }
 
     /**
@@ -91,8 +135,9 @@ public class SandboxMapas
      * @return
      */
     public int getCantidadCadenasDiferentes( )
-    {
-        return -1;
+    {   
+        return mapaCadenas.values().size();
+
     }
 
     /**
@@ -104,6 +149,8 @@ public class SandboxMapas
      */
     public void agregarCadena( String cadena )
     {
+        String llave = new StringBuilder(cadena).reverse().toString();
+        mapaCadenas.put(llave, cadena);
 
     }
 
@@ -113,7 +160,7 @@ public class SandboxMapas
      */
     public void eliminarCadenaConLLave( String llave )
     {
-
+        mapaCadenas.remove(llave);
     }
 
     /**
@@ -122,7 +169,8 @@ public class SandboxMapas
      */
     public void eliminarCadenaConValor( String valor )
     {
-
+        String llave = new StringBuilder(valor).reverse().toString();
+        mapaCadenas.remove(llave);
     }
 
     /**
@@ -133,7 +181,13 @@ public class SandboxMapas
      */
     public void reiniciarMapaCadenas( List<Object> objetos )
     {
-
+        mapaCadenas.clear();
+        for (Object objeto : objetos)
+        {
+            String cadena = objeto.toString();
+            String llave = new StringBuilder(cadena).reverse().toString();
+            mapaCadenas.put(llave, cadena);
+        }
     }
 
     /**
@@ -141,7 +195,13 @@ public class SandboxMapas
      */
     public void volverMayusculas( )
     {
-
+        Map<String, String> nuevoMapa = new HashMap<String, String>( );
+        for (String llave : mapaCadenas.keySet( ))
+        {
+            String llaveMayuscula = llave.toUpperCase();
+            nuevoMapa.put(llaveMayuscula, mapaCadenas.get(llave));
+        }
+        mapaCadenas = nuevoMapa;
     }
 
     /**
@@ -151,7 +211,14 @@ public class SandboxMapas
      */
     public boolean compararValores( String[] otroArreglo )
     {
-        return false;
+        for (String valor : otroArreglo)
+        {
+            if (!mapaCadenas.containsValue(valor))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
